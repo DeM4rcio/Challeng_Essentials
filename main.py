@@ -44,6 +44,7 @@ def enter_move():
             break
         else:
             pass
+
         
     
     
@@ -64,23 +65,31 @@ def make_list_of_free_fields(board):
 def victory_for():
     
 
+    # Finalização por linha
+    if ([tabuleiro[0][0],tabuleiro[0][1],tabuleiro[0][2]]) == ['X','X','X'] or ['O','O','O']:
+        return True
+    elif ([tabuleiro[1][0],tabuleiro[1][1],tabuleiro[1][2]]) == ['X','X','X'] or ['O','O','O']:
+        return True
+    elif ([tabuleiro[2][0],tabuleiro[2][1],tabuleiro[2][2]]) == ['X','X','X'] or ['O','O','O']:
+        return True
 
-    for j in range(3):
-        if tabuleiro[0][j] and tabuleiro[1][j] and tabuleiro[2][j] == "X" or "O":
-            print("Vencedor!")
-            
-            return True
-        else:
-            return False
+    #Finalização por coluna
+    elif ([tabuleiro[0][0],tabuleiro[1][0],tabuleiro[2][0]]) == ['X','X','X'] or ['O','O','O']:
+        return True
+    elif ([tabuleiro[0][1],tabuleiro[1][1],tabuleiro[2][1]]) == ['X','X','X'] or ['O','O','O']:
+        return True
+    elif ([tabuleiro[0][2],tabuleiro[1][2],tabuleiro[2][2]]) == ['X','X','X'] or ['O','O','O']:
+        return True
+
+
+    #Finalização pela diagonal
+    elif ([tabuleiro[0][0],tabuleiro[1][1],tabuleiro[2][2]]) == ['X','X','X'] or ['O','O','O']:
+        return True
+    elif ([tabuleiro[0][2],tabuleiro[1][1],tabuleiro[2][0]]) == ['X','X','X'] or ['O','O','O']:
+        return True
     
-    if tabuleiro[0][0] and tabuleiro[1][1] and tabuleiro[2][2] == "X" or "O":
-       print("Vencedor!")      
-       return True
-    elif tabuleiro[0] or  tabuleiro[1] or tabuleiro[2]== ["X","X","X"] or ["O","O","O"]:       
-       print("Vencedor!")     
-       return True
     else:
-       return False
+        return False
 
     
     
@@ -100,11 +109,12 @@ def draw_move():
    for i in range(len(tabuleiro)):
         for j in range(len(tabuleiro)):
             if randrange(8) == tabuleiro[i][j]:
-                tabuleiro[i][j] = "X"
-                return display_board()
+                tabuleiro[i][j] = "X"  
+                             
             else:
                 pass
 
+            
  
  # A função desenha o movimento do computador e atualiza o tabuleiro.
 
