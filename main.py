@@ -1,6 +1,6 @@
 from random import randrange
 
-tabuleiro = [[1,2,3],[4,5,6],[7,8,9]]
+tabuleiro = [[1,2,3],[4,"X",6],[7,8,9]]
 
 
 
@@ -8,7 +8,7 @@ tabuleiro = [[1,2,3],[4,5,6],[7,8,9]]
 
 def display_board(): 
     
-    print(f"""
+    return print(f"""
 +-------+-------+-------+
 |       |       |       |
 |   {tabuleiro[0][0]}   |   {tabuleiro[0][1]}   |   {tabuleiro[0][2]}   |
@@ -23,29 +23,33 @@ def display_board():
 |       |       |       |
 +-------+-------+-------+
     """)
-    return
+    
     
  # A função aceita um parâmetro contendo o status atual da placa
  # e o imprime no console.
 
 
 def enter_move():
-    while True:
-        draw_move()
-        display_board(),
-        jogada = int(input("Digite seu movimento"))
-        for i in range(len(tabuleiro)):
-            for j in range(len(tabuleiro)):
-                if jogada == tabuleiro[i][j]:
-                    tabuleiro[i][j] = "O"                    
-                else:
-                     pass
-        if victory_for():
-            break
-        else:
-            pass
+ ok = False # suposição falsa - precisamos dela para entrar no loop
+ while not ok:
+    jogada = input("Digite seu movimento: ")
 
-        
+    ok = len(jogada) == 1 and jogada >= '1' and jogada <= '9' # a entrada do usuário é válida?
+    if not ok:
+        print("Movimento ruim - repita sua entrada!") # não, não é - faça a entrada novamente
+        continue
+
+    jogada = int(jogada) - 1 # número da célula de 0 a 8
+    row = jogada // 3 # linha da célula
+    col = jogada % 3 # coluna da célula
+    sign = tabuleiro[row][col] # verifique o quadrado selecionado
+    ok = sign not in ['O','X']
+
+    if not ok: # está ocupado - para a entrada novamente
+        print("Campo já ocupado - repita sua entrada!")
+        continue
+    tabuleiro[row][col] = 'O' # definir '0' no quadrado selecionado
+    print(tabuleiro)
     
     
 
@@ -54,43 +58,50 @@ def enter_move():
  # verifica a entrada e atualiza o quadro de acordo com a decisão do usuário.
 
 
-def make_list_of_free_fields(board):
-    
+def make_list_of_free_fields():
+    vazio = []
+    for i in range(len(tabuleiro)):
+        for j in range(len(tabuleiro)):
+            if tabuleiro[i][j] not in ['O','X']: # o celular está livre?
+                vazio.append(tabuleiro[i][j])
+    return vazio
 
- pass
+
+ 
  #  A função navega pelo tabuleiro e constrói uma lista de todas as casas livres; 
  # a lista consiste em tuplas, enquanto cada tupla é um par de números de linha e coluna.
 
 
+def play():
+    while True :
+        display_board();
+        enter_move();
+        draw_move();
+        if victory_for()== True:
+            print("Vencedor!")
+            break
+        else:
+            pass
+
 def victory_for():
-    
+    condicao = False
 
-    # Finalização por linha
-    if ([tabuleiro[0][0],tabuleiro[0][1],tabuleiro[0][2]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-    elif ([tabuleiro[1][0],tabuleiro[1][1],tabuleiro[1][2]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-    elif ([tabuleiro[2][0],tabuleiro[2][1],tabuleiro[2][2]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-
-    #Finalização por coluna
-    elif ([tabuleiro[0][0],tabuleiro[1][0],tabuleiro[2][0]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-    elif ([tabuleiro[0][1],tabuleiro[1][1],tabuleiro[2][1]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-    elif ([tabuleiro[0][2],tabuleiro[1][2],tabuleiro[2][2]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-
-
-    #Finalização pela diagonal
-    elif ([tabuleiro[0][0],tabuleiro[1][1],tabuleiro[2][2]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-    elif ([tabuleiro[0][2],tabuleiro[1][1],tabuleiro[2][0]]) == ['X','X','X'] or ['O','O','O']:
-        return True
-    
-    else:
-        return False
-
+    for rc in range(3):
+        if tabuleiro[rc][0] == ("X" or "O") and tabuleiro[rc][1] == ("X" or "O") and tabuleiro[rc][2] == ("X" or "O"): # verificar linha rc
+            print("foi aqui 1")
+            condicao = True
+        elif tabuleiro[0][rc] == ("X" or "O") and tabuleiro[1][rc] == ("X" or "O") and tabuleiro[2][rc] == ("X" or "O"): # verificar coluna rc
+            condicao = True
+            print("foi aqui 2")
+        elif tabuleiro[0][0] == ("X" or "O") and tabuleiro[1][1] == ("X" or "O") and tabuleiro[2][2] == ("X" or "O"): # verificar 1ª diagonal
+            condicao = True
+            print("foi aqui 3")
+        elif tabuleiro[0][2] == ("X" or "O") and tabuleiro[1][1] == ("X" or "O") and tabuleiro[2][0] == ("X" or "O"): # verifique 2ª diagonal
+            condicao = True
+            print("foi aqui 4")
+        
+        
+    return condicao
     
     
     
@@ -103,19 +114,29 @@ def victory_for():
 
 
 def draw_move():
-   display_board(),
-   
+        display_board()
+        confirmacao = True
+        while confirmacao:
+            jogada_bot = randrange(1,10)
+        
+            for i in range(len(tabuleiro)):
+                    for j in range(len(tabuleiro)):  
+                        
+                        if jogada_bot == tabuleiro[i][j]:
+                            tabuleiro[i][j] = "X"
+                            confirmacao = False                    
+                        else:
+                            pass
+            
 
-   for i in range(len(tabuleiro)):
-        for j in range(len(tabuleiro)):
-            if randrange(8) == tabuleiro[i][j]:
-                tabuleiro[i][j] = "X"  
-                             
-            else:
-                pass
+    
+   #for i in range(len(tabuleiro)):
+   #     for j in range(len(tabuleiro)):
+
+            
 
             
  
  # A função desenha o movimento do computador e atualiza o tabuleiro.
 
-print(enter_move())
+print(play())
